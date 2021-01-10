@@ -115,6 +115,20 @@ val githubUrl = "https://github.com/$githubPath"
 
 val publicationName: String by project
 
+fun selectJar() = when(publicationName) {
+    "annotations" -> annotationsJar
+    "core" -> coreJar
+    "generator" -> generatorJar
+    else -> throw Exception("Unknown publication name: $publicationName")
+}
+
+fun selectSourcesJar() = when(publicationName) {
+    "annotations" -> annotationsSourcesJar
+    "core" -> coreSourcesJar
+    "generator" -> generatorSourcesJar
+    else -> throw Exception("Unknown publication name: $publicationName")
+}
+
 configure<PublishingExtension> {
     publications {
         create<MavenPublication>(publicationName) {
@@ -150,9 +164,9 @@ configure<PublishingExtension> {
                 }
             }
 
-            artifact(if(publicationName == "core") coreJar else generatorJar)
+            artifact(selectJar())
             artifact(mapOf(
-                    "source" to if(publicationName == "core") coreSourcesJar else generatorSourcesJar,
+                    "source" to selectSourcesJar(),
                     "classifier" to "sources",
                     "extension" to "jar"
             ))
