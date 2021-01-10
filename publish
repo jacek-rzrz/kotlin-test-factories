@@ -4,14 +4,8 @@ publicationName=$1
 
 source ./secrets
 
-if [ -z "$publicationName" ]
-then
-  echo "Usage: $0 core|generator" 1>&2
-  exit 1
-fi
+./gradlew build
 
-exit
-
-export ORG_GRADLE_PROJECT_publicationName=$1
-
-./gradlew build bintrayUpload
+ORG_GRADLE_PROJECT_publicationName=annotations ./gradlew bintrayUpload
+ORG_GRADLE_PROJECT_publicationName=core ./gradlew bintrayUpload
+ORG_GRADLE_PROJECT_publicationName=generator ./gradlew bintrayUpload

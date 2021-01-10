@@ -1,6 +1,8 @@
 # kotlin-test-factories
 
-Auto-generated test factory functions for Kotlin.
+Auto-generated test factory functions for Kotlin. Works with 
+[KAPT](https://kotlinlang.org/docs/reference/kapt.html)
+by dynamically creating source files.
 
 ## Usage
 Add to `build.gradle.kts`:
@@ -12,8 +14,9 @@ plugins {
 }
 
 dependencies {
-    kapt("pl.rzrz:kotlin-test-factories-generator:VERSION")
-    implementation("pl.rzrz:kotlin-test-factories-core:VERSION")
+    kapt("pl.rzrz:kotlin-test-factories-generator:VERSION")             // generator
+    implementation("pl.rzrz:kotlin-test-factories-annotations:VERSION") // annotations only
+    testImplementation("pl.rzrz:kotlin-test-factories-core:VERSION")    // supports generated factories
 }
 ```
 
