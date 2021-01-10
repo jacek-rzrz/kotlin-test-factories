@@ -4,16 +4,19 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import pl.rzrz.kotlin.test.factories.TestFactories.aUser
 
-data class Address(
-        val firstLine: String,
-        val secondLine: String
-)
-
 @TestFactory
 data class User(
         val firstName: String,
         val lastName: String,
         val address: Address
+) {
+
+    fun name(): String = "$firstName $lastName"
+}
+
+data class Address(
+        val firstLine: String,
+        val secondLine: String
 )
 
 class TestFactoriesIntegrationTest {
@@ -21,9 +24,10 @@ class TestFactoriesIntegrationTest {
     @Test
     fun `create an instance with test factory`() {
         val user = aUser(
-                firstName = "John"
+                firstName = "John",
+                lastName = "Smith"
         )
 
-        assertThat(user.firstName).isEqualTo("John")
+        assertThat(user.name()).isEqualTo("John Smith")
     }
 }
