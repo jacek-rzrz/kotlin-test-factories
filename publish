@@ -2,6 +2,8 @@
 
 publicationName=$1
 
+source ./secrets
+
 if [ -z "$publicationName" ]
 then
   echo "Usage: $0 core|generator" 1>&2
