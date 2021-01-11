@@ -3,6 +3,7 @@ package pl.rzrz.kotlin.test.factories.core
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
+import java.time.*
 
 @Suppress("Unused")
 class ObjectCreatorTest {
@@ -70,5 +71,15 @@ class ObjectCreatorTest {
     @Test
     fun enums() {
         assertThat(ObjectCreator.create<MyEnum>()).isIn(MyEnum.ONE, MyEnum.ANOTHER)
+    }
+
+    @Test
+    fun `java time classes`() {
+        assertThat(ObjectCreator.create<Instant>()).isNotNull
+        assertThat(ObjectCreator.create<Duration>()).isNotNull
+        assertThat(ObjectCreator.create<LocalTime>()).isNotNull
+        assertThat(ObjectCreator.create<LocalDateTime>()).isNotNull
+        assertThat(ObjectCreator.create<LocalDate>()).isNotNull
+        assertThat(ObjectCreator.create<ZonedDateTime>()).isNotNull
     }
 }

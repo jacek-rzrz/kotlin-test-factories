@@ -1,6 +1,7 @@
 package pl.rzrz.kotlin.test.factories.core
 
 import java.math.BigDecimal
+import java.time.*
 import kotlin.reflect.*
 
 object ObjectCreator {
@@ -29,15 +30,21 @@ object ObjectCreator {
         if(jClass.isEnum) return getEnumValue(jClass)
 
         return when (kClass) {
-            Int::class -> 0
-            Long::class -> 0L
-            Double::class -> 0.0
-            Float::class -> 0.0F
             BigDecimal::class -> BigDecimal.ZERO
             Char::class -> ' '
-            String::class -> ""
+            Double::class -> 0.0
+            Duration::class -> Duration.ZERO
+            Float::class -> 0.0F
+            Instant::class -> Instant.now()
+            Int::class -> 0
             List::class -> listOf(create(kType.arguments[0].type!!))
+            LocalTime::class -> LocalTime.now()
+            LocalDate::class -> LocalDate.now()
+            LocalDateTime::class -> LocalDateTime.now()
+            Long::class -> 0L
             Map::class -> mapOf(create(kType.arguments[0].type!!) to create(kType.arguments[1].type!!))
+            String::class -> ""
+            ZonedDateTime::class -> ZonedDateTime.now()
             else -> createObject(kClass)
         }
     }
