@@ -6,8 +6,8 @@ import pl.rzrz.kotlin.test.factories.TestFactories.aUser
 
 @TestFactory
 data class User(
-        val firstName: String,
-        val lastName: String,
+        val firstName: String?,
+        val lastName: String?,
         val address: Address
 ) {
 
@@ -29,5 +29,14 @@ class TestFactoriesIntegrationTest {
         )
 
         assertThat(user.name()).isEqualTo("John Smith")
+    }
+
+    @Test
+    fun `support nullable fields`() {
+        val user = aUser(
+                firstName = null
+        )
+
+        assertThat(user.firstName).isNull()
     }
 }

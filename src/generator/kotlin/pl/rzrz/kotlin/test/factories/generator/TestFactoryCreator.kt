@@ -1,6 +1,7 @@
 package pl.rzrz.kotlin.test.factories.generator
 
 import com.squareup.kotlinpoet.*
+import org.jetbrains.annotations.Nullable
 import pl.rzrz.kotlin.test.factories.core.ObjectCreator
 import javax.lang.model.element.*
 
@@ -16,15 +17,15 @@ object TestFactoryCreator {
                 }
 
         return FunSpec.builder("a$typeName")
-                .returns(element.className())
+                .returns(element.typeName())
                 .addParameters(parameters)
-                .addStatement("return %T($constructorArgs)", element.className())
+                .addStatement("return %T($constructorArgs)", element.typeName())
                 .build()
     }
 
     private fun parameterSpec(element: VariableElement): ParameterSpec {
-        return ParameterSpec.builder(element.simpleName.toString(), element.className())
-                .defaultValue(CodeBlock.of("%T.create<%T>()", ObjectCreator::class.asClassName(), element.className()))
+        return ParameterSpec.builder(element.simpleName.toString(), element.typeName())
+                .defaultValue(CodeBlock.of("%T.create<%T>()", ObjectCreator::class.asClassName(), element.typeName()))
                 .build()
     }
 
@@ -40,8 +41,10 @@ object TestFactoryCreator {
         return qualifiedName().substringAfterLast(".")
     }
 
-    private fun Element.className(): ClassName {
-        return ClassName(packageName(), simpleClassName())
+    private fun Element.typeName(): TypeName {
+        val annotation = getAnnotation(Nullable::class.java)
+        val typeName = ClassName(packageName(), simpleClassName())
+        return if(annotation == null) typeName else typeName.copy(nullable = true)
     }
 
     private fun Element.packageName(): String {
