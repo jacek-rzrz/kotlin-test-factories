@@ -1,5 +1,6 @@
 package pl.rzrz.kotlin.test.factories.core
 
+import java.math.BigDecimal
 import kotlin.reflect.*
 
 object ObjectCreator {
@@ -27,6 +28,7 @@ object ObjectCreator {
             Long::class -> 0L
             Double::class -> 0.0
             Float::class -> 0.0F
+            BigDecimal::class -> BigDecimal.ZERO
             Char::class -> ' '
             String::class -> ""
             List::class -> listOf(create(kType.arguments[0].type!!))

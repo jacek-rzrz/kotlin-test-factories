@@ -2,17 +2,19 @@ package pl.rzrz.kotlin.test.factories.core
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
 @Suppress("Unused")
 class ObjectCreatorTest {
 
     @Test
-    fun `primitives and strings`() {
+    fun `numbers and strings`() {
         assertThat(ObjectCreator.create<Int>()).isEqualTo(0)
         assertThat(ObjectCreator.create<Long>()).isEqualTo(0L)
         assertThat(ObjectCreator.create<Double>()).isEqualTo(0.0)
         assertThat(ObjectCreator.create<Float>()).isEqualTo(0.0F)
         assertThat(ObjectCreator.create<Char>()).isEqualTo(' ')
+        assertThat(ObjectCreator.create<BigDecimal>()).isEqualTo("0")
         assertThat(ObjectCreator.create<String>()).isEqualTo("")
     }
 
