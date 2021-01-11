@@ -52,3 +52,8 @@ class UserTest {
     }
 }
 ```
+
+
+## Features
+
+- Generate test factories by annotating classes directly

@@ -52,16 +52,23 @@ class ObjectCreatorTest {
     }
 
     @Test
-    fun `create a list`() {
+    fun list() {
         data class WithListField(val list: List<String>)
         val instance = ObjectCreator.create<WithListField>()
         assertThat(instance).isEqualTo(WithListField(list = listOf("")))
     }
 
     @Test
-    fun `create a map`() {
+    fun map() {
         data class WithMapField(val map: Map<String, Int>)
         val instance = ObjectCreator.create<WithMapField>()
         assertThat(instance).isEqualTo(WithMapField(map = mapOf("" to 0)))
+    }
+
+    enum class MyEnum { ONE, ANOTHER }
+
+    @Test
+    fun enums() {
+        assertThat(ObjectCreator.create<MyEnum>()).isIn(MyEnum.ONE, MyEnum.ANOTHER)
     }
 }

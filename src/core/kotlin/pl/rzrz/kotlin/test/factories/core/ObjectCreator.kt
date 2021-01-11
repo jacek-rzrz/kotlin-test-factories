@@ -23,6 +23,11 @@ object ObjectCreator {
     }
 
     private fun matchAndCreate(kClass: KClass<*>, kType: KType): Any {
+
+        val jClass = kClass.java
+
+        if(jClass.isEnum) return getEnumValue(jClass)
+
         return when (kClass) {
             Int::class -> 0
             Long::class -> 0L
@@ -35,6 +40,10 @@ object ObjectCreator {
             Map::class -> mapOf(create(kType.arguments[0].type!!) to create(kType.arguments[1].type!!))
             else -> createObject(kClass)
         }
+    }
+
+    private fun getEnumValue(jClass: Class<out Any>): Any {
+        return jClass.enumConstants.first()
     }
 
     private fun createObject(kClass: KClass<*>): Any {
