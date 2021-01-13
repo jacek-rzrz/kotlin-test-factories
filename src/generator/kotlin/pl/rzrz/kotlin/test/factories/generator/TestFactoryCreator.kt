@@ -1,9 +1,13 @@
 package pl.rzrz.kotlin.test.factories.generator
 
 import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import org.jetbrains.annotations.Nullable
 import pl.rzrz.kotlin.test.factories.core.ObjectCreator
 import javax.lang.model.element.*
+import javax.lang.model.type.DeclaredType
+import javax.lang.model.type.TypeKind
+import javax.lang.model.type.TypeMirror
 
 object TestFactoryCreator {
 
@@ -24,31 +28,48 @@ object TestFactoryCreator {
     }
 
     private fun parameterSpec(element: VariableElement): ParameterSpec {
-        return ParameterSpec.builder(element.simpleName.toString(), element.typeName())
-                .defaultValue(CodeBlock.of("%T.create<%T>()", ObjectCreator::class.asClassName(), element.typeName()))
+        val typeName = element.typeName()
+        return ParameterSpec.builder(element.simpleName.toString(), typeName)
+                .defaultValue(CodeBlock.of("%T.create<%T>()", ObjectCreator::class.asClassName(), typeName))
                 .build()
     }
 
-    private fun Element.qualifiedName(): String {
-        val type = asType().toString()
-        if(type == "java.lang.String") {
-            return "kotlin.String"
-        }
-        return type
+    private fun TypeMirror.qualifiedNameWithoutGenericParameters(): String {
+        return qualifiedName().split('<').first()
     }
 
-    private fun Element.simpleClassName(): String {
-        return qualifiedName().substringAfterLast(".")
+    private fun TypeMirror.qualifiedName(): String {
+        val type = toString()
+        return type
+                .replace("java.lang.String", "kotlin.String")
+                .replace("java.util.List", "kotlin.collections.List")
+    }
+
+    private fun TypeMirror.simpleClassName(): String {
+        return qualifiedName().split("<").first().substringAfterLast(".")
     }
 
     private fun Element.typeName(): TypeName {
         val annotation = getAnnotation(Nullable::class.java)
-        val typeName = ClassName(packageName(), simpleClassName())
+        val typeName = asType().typeName()
         return if(annotation == null) typeName else typeName.copy(nullable = true)
     }
 
-    private fun Element.packageName(): String {
-        return qualifiedName().substringBeforeLast(".")
+    private fun TypeMirror.typeName(): TypeName {
+        val genericTypes = genericTypes()
+        val className = ClassName(packageName(), simpleClassName())
+        return if(genericTypes.isEmpty()) className else className.parameterizedBy(genericTypes)
+    }
+
+    private fun TypeMirror.packageName(): String {
+        return qualifiedNameWithoutGenericParameters().substringBeforeLast(".")
+    }
+
+    private fun TypeMirror.genericTypes(): List<TypeName> {
+        return when(kind) {
+            TypeKind.DECLARED -> (this as DeclaredType).typeArguments.map { it.typeName() }
+            else -> emptyList()
+        }
     }
 
     private fun Element.constructors(): List<ExecutableElement> {

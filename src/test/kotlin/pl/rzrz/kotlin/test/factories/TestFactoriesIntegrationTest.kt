@@ -8,7 +8,7 @@ import pl.rzrz.kotlin.test.factories.TestFactories.aUser
 data class User(
         val firstName: String?,
         val lastName: String?,
-        val address: Address
+        val addresses: List<Address>,
 ) {
 
     fun name(): String = "$firstName $lastName"
