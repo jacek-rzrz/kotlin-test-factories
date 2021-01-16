@@ -4,6 +4,7 @@ import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import org.jetbrains.annotations.Nullable
 import pl.rzrz.kotlin.test.factories.core.ObjectCreator
+import pl.rzrz.kotlin.test.factories.generator.TestFactoryCreator.genericTypes
 import javax.lang.model.element.*
 import javax.lang.model.type.DeclaredType
 import javax.lang.model.type.TypeKind
@@ -11,9 +12,9 @@ import javax.lang.model.type.TypeMirror
 
 object TestFactoryCreator {
 
-    fun createFor(element: Element): FunSpec {
-        val typeName = element.simpleName.toString()
-        val constructor = element.constructor()
+    fun createFor(typeMirror: TypeMirror): FunSpec {
+        val typeName = typeMirror.simpleClassName()
+        val constructor = typeMirror.constructor()
         val parameters = constructor.parameters.map { parameterSpec(it) }
         val constructorArgs = constructor.parameters.map { it.simpleName.toString() }
                 .joinToString(separator = ",") { parameter ->
@@ -21,9 +22,9 @@ object TestFactoryCreator {
                 }
 
         return FunSpec.builder("a$typeName")
-                .returns(element.typeName())
+                .returns(typeMirror.typeName())
                 .addParameters(parameters)
-                .addStatement("return %T($constructorArgs)", element.typeName())
+                .addStatement("return %T($constructorArgs)", typeMirror.typeName())
                 .build()
     }
 
@@ -80,5 +81,12 @@ object TestFactoryCreator {
 
     private fun Element.constructor(): ExecutableElement {
         return constructors().first()
+    }
+
+    private fun TypeMirror.constructor(): ExecutableElement {
+        return when(kind) {
+            TypeKind.DECLARED -> (this as DeclaredType).asElement().constructor()
+            else -> throw Exception("$kind")
+        }
     }
 }

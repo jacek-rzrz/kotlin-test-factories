@@ -2,9 +2,14 @@ package pl.rzrz.kotlin.test.factories
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import pl.rzrz.kotlin.test.factories.TestFactories.aUser
+import pl.rzrz.test.factories.generated.TestFactories.aUser
 
-@TestFactory
+@TestFactoriesConfig(packageName = "pl.rzrz.test.factories.generated", value = [
+    User::class,
+    Address::class
+])
+interface Config
+
 data class User(
         val firstName: String?,
         val lastName: String?,
