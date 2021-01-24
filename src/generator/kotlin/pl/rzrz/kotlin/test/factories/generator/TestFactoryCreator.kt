@@ -42,6 +42,7 @@ object TestFactoryCreator {
     private fun TypeMirror.qualifiedName(): String {
         val type = toString()
         return type
+                .replace(Regex("int|double|float|char|long")) { "kotlin." + it.value.capitalize() }
                 .replace("java.lang.String", "kotlin.String")
                 .replace("java.util.List", "kotlin.collections.List")
     }

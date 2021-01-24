@@ -2,13 +2,8 @@ package pl.rzrz.kotlin.test.factories
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import pl.rzrz.test.factories.generated.TestFactories.aClassWithPrimitiveFields
 import pl.rzrz.test.factories.generated.TestFactories.aUser
-
-@TestFactoriesConfig(packageName = "pl.rzrz.test.factories.generated", value = [
-    User::class,
-    Address::class
-])
-interface Config
 
 data class User(
         val firstName: String?,
@@ -24,6 +19,14 @@ data class Address(
         val secondLine: String
 )
 
+data class ClassWithPrimitiveFields(
+        val intField: Int,
+        val longField: Long,
+        val charField: Char,
+        val floatField: Float,
+        val doubleField: Double,
+)
+
 class TestFactoriesIntegrationTest {
 
     @Test
@@ -37,11 +40,20 @@ class TestFactoriesIntegrationTest {
     }
 
     @Test
-    fun `support nullable fields`() {
+    fun `create an instance with null field`() {
         val user = aUser(
                 firstName = null
         )
 
         assertThat(user.firstName).isNull()
+    }
+
+    @Test
+    fun `instantiate a class with primitive fields`() {
+        val primitives = aClassWithPrimitiveFields(
+                doubleField = 10.1,
+        )
+
+        assertThat(primitives.doubleField).isEqualTo(10.1)
     }
 }

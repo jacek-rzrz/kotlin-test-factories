@@ -116,3 +116,4 @@ class UserTest {
  - [x] Customizable package and class name
  - [ ] Handling of recursive data structures
  - [ ] Single dependency?
+ - [ ] Default package same as config
