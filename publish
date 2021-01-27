@@ -6,6 +6,5 @@ source ./secrets
 
 ./gradlew clean build
 
-ORG_GRADLE_PROJECT_publicationName=annotations ./gradlew bintrayUpload
 ORG_GRADLE_PROJECT_publicationName=core ./gradlew bintrayUpload
 ORG_GRADLE_PROJECT_publicationName=generator ./gradlew bintrayUpload

@@ -2,7 +2,7 @@ package pl.rzrz.kotlin.test.factories.generator
 
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
-import pl.rzrz.kotlin.test.factories.TestFactoriesConfig
+import pl.rzrz.kotlin.test.factories.core.TestFactoriesConfig
 import java.io.File
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
@@ -13,7 +13,7 @@ import javax.lang.model.type.TypeMirror
 import javax.tools.Diagnostic
 
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-@SupportedAnnotationTypes("pl.rzrz.kotlin.test.factories.TestFactoriesConfig")
+@SupportedAnnotationTypes("pl.rzrz.kotlin.test.factories.core.TestFactoriesConfig")
 @SupportedOptions(TestFactoryAnnotationProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 class TestFactoryAnnotationProcessor : AbstractProcessor() {
 

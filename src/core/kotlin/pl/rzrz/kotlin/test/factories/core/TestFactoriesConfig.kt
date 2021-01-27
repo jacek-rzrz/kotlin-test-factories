@@ -1,4 +1,4 @@
-package pl.rzrz.kotlin.test.factories
+package pl.rzrz.kotlin.test.factories.core
 
 import kotlin.reflect.KClass
 
