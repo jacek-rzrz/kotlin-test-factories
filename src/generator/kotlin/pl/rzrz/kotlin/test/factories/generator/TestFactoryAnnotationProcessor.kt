@@ -40,7 +40,10 @@ class TestFactoryAnnotationProcessor : AbstractProcessor() {
         info("Processing " + annotatedElement.simpleName)
         val annotation = annotatedElement.getAnnotation(TestFactoriesConfig::class.java)
         val targetTypes = annotation.targetTypes()
-
+        val packageName = if(annotation.packageName.isNotBlank())
+            annotation.packageName
+        else
+            processingEnv.elementUtils.getPackageOf(annotatedElement).toString()
         val testFactoriesObject = targetTypes
                 .map {
                     info("Generating test factory for $it")
@@ -49,7 +52,7 @@ class TestFactoryAnnotationProcessor : AbstractProcessor() {
                 .fold(TypeSpec.objectBuilder(annotation.className), TypeSpec.Builder::addFunction)
                 .build()
 
-        val file = FileSpec.builder(annotation.packageName, annotation.className)
+        val file = FileSpec.builder(packageName, annotation.className)
                 .addType(testFactoriesObject)
                 .build()
 

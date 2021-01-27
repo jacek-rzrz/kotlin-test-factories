@@ -2,8 +2,8 @@ package pl.rzrz.kotlin.test.factories
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import pl.rzrz.test.factories.generated.TestFactories.aClassWithPrimitiveFields
-import pl.rzrz.test.factories.generated.TestFactories.aUser
+import pl.rzrz.kotlin.test.factories.TestFactories.aClassWithPrimitiveFields
+import pl.rzrz.kotlin.test.factories.TestFactories.aUser
 
 data class User(
         val firstName: String?,
