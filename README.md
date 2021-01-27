@@ -5,9 +5,12 @@ Auto-generated test factory functions for Kotlin. Works with
 by dynamically creating source files.
 
 ⚠️ WARNING. IntelliJ Idea
-[has not yet got support](https://youtrack.jetbrains.com/issue/KT-15040) 
-for KAPT. That means you have to invoke the `kaptTest` gradle task
-by hand each time you change your model. 
+[has not yet got a smooth KAPT support](https://youtrack.jetbrains.com/issue/KT-15040). 
+When target classes change, do one of the following:
+
+- Build the project (hit `CMD+F9` or `Ctrl+F9`). 
+  IntelliJ has to be configured to [build with Gradle](https://www.jetbrains.com/help/idea/gradle.html#gradle_settings_access). 
+- Invoke the `kaptTest` gradle task. 
 
 ## Why?
 How to write a test for the `name` method?
@@ -20,7 +23,7 @@ data class User(
     fun name(): String = "$firstName $lastName"
 }
 ```
-The code below looks clean:
+The code below looks clean...
 ```kotlin
 @Test
 fun name() {
@@ -32,13 +35,14 @@ fun name() {
     assertThat(user.name()).isEqualTo("John Smith")
 }
 ```
-This test doesn't compile because the `address` parameter isn't specified.
-It shouldn't be specified because it's irrelevant to the `name` method.
-It would just add noise to the test.
+...but it doesn't compile: the `address` constructor parameter isn't provided.
+Specifying a random address would make the compiler happy
+at the cost of developer happiness. It would only introduce noise to
+a perfectly fine test.
 
-A good test should be readable, focused and define clear inputs.
+A good test should be readable, focused and define clear inputs. And so is this one.
 
-A common workaround is a *test factory* function:
+As a workaround one can write a *test factory* function:
 ```kotlin
 fun aUser(
         firstName: String = "",
@@ -52,7 +56,8 @@ fun aUser(
     )
 }
 ```
-With a test factory, the final test can look like this:
+With a test factory `User` instances can be obtained by specifying relevant fields
+and omitting irrelevant ones. Our final test looks like this:
 ```kotlin
 @Test
 fun name() {
@@ -65,8 +70,10 @@ fun name() {
 }
 ```
 
-Writing and maintaining test factories is a laborious task so this tool
-generates them automatically.
+Job done! Here is a bummer though: writing and maintaining test factories
+is laborious and more boring than
+[scraping the internet for thousands of food pictures](https://www.youtube.com/watch?t=135&v=vIci3C4JkL0).
+This library generates test factories automatically.
 
 ## Usage
 Add to `build.gradle.kts`:
@@ -114,6 +121,7 @@ class UserTest {
 
  - [x] Generate test factories
  - [x] Customizable package and class name
- - [ ] Handling of recursive data structures
+ - [ ] Support for generic classes
+ - [ ] Support for recursive data structures
  - [ ] Single dependency?
  - [ ] Default package same as config
