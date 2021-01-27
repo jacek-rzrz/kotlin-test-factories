@@ -92,6 +92,8 @@ dependencies {
 
 Create a configuration in test sources: 
 ```kotlin
+package com.me
+
 @TestFactoriesConfig([
     User::class
 ])
@@ -100,7 +102,7 @@ interface TestFactoriesConfiguration
 
 Write tests:
 ```kotlin
-import com.example.TestFactories.aUser
+import com.me.TestFactories.aUser
 
 class UserTest {
 
