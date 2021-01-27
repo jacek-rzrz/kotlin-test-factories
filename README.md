@@ -92,7 +92,7 @@ dependencies {
 
 Create a configuration in test sources: 
 ```kotlin
-@TestFactoriesConfig(packageName = "com.example", value = [
+@TestFactoriesConfig([
     User::class
 ])
 interface TestFactoriesConfiguration
