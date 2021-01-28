@@ -85,8 +85,8 @@ plugins {
 }
 
 dependencies {
-    testImplementation("pl.rzrz:kotlin-test-factories-core:VERSION")    // supports generated factories
-    kaptTest("pl.rzrz:kotlin-test-factories-generator:VERSION")         // generator
+    testImplementation("pl.rzrz:kotlin-test-factories-core:VERSION") // annotations + support for generated factories
+    kaptTest("pl.rzrz:kotlin-test-factories-generator:VERSION")      // generator
 }
 ```
 
@@ -122,8 +122,8 @@ class UserTest {
 ## Features
 
  - [x] Generate test factories
+ - [x] Default package same as config
  - [x] Customizable package and class name
  - [ ] Support for generic classes
  - [ ] Support for recursive data structures
  - [ ] Single dependency?
- - [ ] Default package same as config
