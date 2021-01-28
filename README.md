@@ -124,6 +124,5 @@ class UserTest {
  - [x] Generate test factories
  - [x] Default package same as config
  - [x] Customizable package and class name
- - [ ] Support for generic classes
- - [ ] Support for recursive data structures
- - [ ] Single dependency?
+ - [ ] Support for generic types
+ - [ ] Support for recursive types
