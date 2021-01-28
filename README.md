@@ -1,4 +1,4 @@
-# kotlin-test-factories
+# ⌨️ kotlin-test-factories
 
 Auto-generated test factory functions for Kotlin. Works with 
 [KAPT](https://kotlinlang.org/docs/reference/kapt.html)
@@ -12,7 +12,7 @@ When target classes change, do one of the following:
   IntelliJ has to be configured to [build with Gradle](https://www.jetbrains.com/help/idea/gradle.html#gradle_settings_access). 
 - Invoke the `kaptTest` gradle task. 
 
-## Why?
+## 🤷‍♀️ Why?
 How to write a test for the `name` method?
 ```kotlin
 data class User(
@@ -75,7 +75,7 @@ is laborious and more boring than
 [scraping the internet for thousands of food pictures](https://www.youtube.com/watch?t=135&v=vIci3C4JkL0).
 This library generates test factories automatically.
 
-## Usage
+## 🏗 Usage
 Add to `build.gradle.kts`:
 
 ```kotlin
@@ -119,7 +119,7 @@ class UserTest {
 ```
 
 
-## Features
+## 📃 Features
 
  - [x] Generate test factories
  - [x] Default package same as config
