@@ -99,6 +99,7 @@ package com.me
 ])
 interface TestFactoriesConfiguration
 ```
+Now hit `CMD+F9` or `Ctrl+F9`, or `./gradlew kaptTest` to generate functions.
 
 Write tests:
 ```kotlin
@@ -122,6 +123,7 @@ class UserTest {
 ## 📃 Features
 
  - [x] Generate test factories
+ - [x] Sealed classes support
  - [x] Default package same as config
  - [x] Customizable package and class name
  - [ ] Support for generic types

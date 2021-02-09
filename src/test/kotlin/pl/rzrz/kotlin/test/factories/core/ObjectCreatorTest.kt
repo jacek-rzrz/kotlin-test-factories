@@ -82,4 +82,14 @@ class ObjectCreatorTest {
         assertThat(ObjectCreator.create<LocalDate>()).isNotNull
         assertThat(ObjectCreator.create<ZonedDateTime>()).isNotNull
     }
+
+    @Test
+    fun `sealed classes`() {
+        val instance = ObjectCreator.create<ASealedClass>()
+        assertThat(instance).isInstanceOf(ASealedClassChild::class.java)
+    }
 }
+
+sealed class ASealedClass
+
+class ASealedClassChild() : ASealedClass()

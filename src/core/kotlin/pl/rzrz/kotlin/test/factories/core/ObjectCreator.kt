@@ -54,6 +54,8 @@ object ObjectCreator {
     }
 
     private fun createObject(kClass: KClass<*>): Any {
+        if(kClass.isSealed) return createObject(kClass.sealedSubclasses.first())
+
         val constructor = kClass.constructors
                 .sortedByDescending { it.parameters.size }
                 .firstOrNull { it.visibility == KVisibility.PUBLIC } ?: throw TestFactoryException("No suitable constructors: ${kClass.simpleName}")
