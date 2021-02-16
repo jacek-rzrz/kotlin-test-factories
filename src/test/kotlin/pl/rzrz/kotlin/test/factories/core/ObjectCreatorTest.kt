@@ -88,6 +88,17 @@ class ObjectCreatorTest {
         val instance = ObjectCreator.create<ASealedClass>()
         assertThat(instance).isInstanceOf(ASealedClassChild::class.java)
     }
+
+    @Test
+    fun `custom type factories`() {
+        ObjectCreator.register(String::class) { "custom string" }
+        val customInstance = ObjectCreator.create<String>()
+        ObjectCreator.unregister(String::class)
+        val normalInstance = ObjectCreator.create<String>()
+
+        assertThat(customInstance).isEqualTo("custom string")
+        assertThat(normalInstance).isEqualTo("")
+    }
 }
 
 sealed class ASealedClass

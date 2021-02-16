@@ -6,6 +6,8 @@ import kotlin.reflect.*
 
 object ObjectCreator {
 
+    private val customFactoryByClass = mutableMapOf<KClass<*>, () -> Any>()
+
     inline fun <reified T> create(): T {
         @OptIn(ExperimentalStdlibApi::class)
         return create(T::class, typeOf<T>()) as T
@@ -16,12 +18,23 @@ object ObjectCreator {
     }
 
     fun create(kClass: KClass<*>, kType: KType): Any {
+        val customFactoryResult = createWithCustomFactory(kClass)
+        if(customFactoryResult != null) {
+            return customFactoryResult
+        }
+
         return try {
             matchAndCreate(kClass, kType)
         } catch (e: Exception) {
             throw TestFactoryException("Error creating ${kClass.simpleName}", e)
         }
     }
+
+    private fun createWithCustomFactory(kClass: KClass<*>): Any? {
+        val factory = customFactoryByClass[kClass] ?: return null
+        return factory()
+    }
+
 
     private fun matchAndCreate(kClass: KClass<*>, kType: KType): Any {
 
@@ -70,4 +83,14 @@ object ObjectCreator {
                 .toTypedArray()
         return constructor.call(*arguments)!!
     }
+
+    fun <T : Any> register(kClass: KClass<T>, customFactory: () -> T) {
+        customFactoryByClass[kClass] = customFactory
+    }
+
+    fun unregister(kClass: KClass<*>) {
+        customFactoryByClass.remove(kClass)
+    }
+
+
 }
