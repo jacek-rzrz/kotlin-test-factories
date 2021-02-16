@@ -10,4 +10,9 @@ class CustomisedConfigIntegrationTest {
     fun `package and class name can be customised`() {
         assertThat(aCustomisedConfigTargetClass()).isInstanceOf(CustomisedConfigTargetClass::class.java)
     }
+
+    @Test
+    fun `custom test factories are being used`() {
+        assertThat(aCustomisedConfigTargetClass().value).isEqualTo("custom string")
+    }
 }

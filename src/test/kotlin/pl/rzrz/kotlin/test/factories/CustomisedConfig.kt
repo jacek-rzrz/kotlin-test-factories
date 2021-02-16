@@ -1,5 +1,7 @@
 package pl.rzrz.kotlin.test.factories
 
+import pl.rzrz.kotlin.test.factories.core.ObjectCreator
+import pl.rzrz.kotlin.test.factories.core.RuntimeCustomisations
 import pl.rzrz.kotlin.test.factories.core.TestFactoriesConfig
 
 data class CustomisedConfigTargetClass(val value: String)
@@ -10,4 +12,9 @@ data class CustomisedConfigTargetClass(val value: String)
         value = [
             CustomisedConfigTargetClass::class,
         ])
-interface CustomisedConfig
+object CustomisedConfig : RuntimeCustomisations {
+
+    override fun applyRuntimeCustomisations(objectCreator: ObjectCreator) {
+        objectCreator.register(String::class) { "custom string" }
+    }
+}
