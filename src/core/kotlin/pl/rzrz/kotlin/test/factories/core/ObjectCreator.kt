@@ -19,7 +19,7 @@ object ObjectCreator {
 
     fun create(kClass: KClass<*>, kType: KType): Any {
         val customFactoryResult = createWithCustomFactory(kClass)
-        if(customFactoryResult != null) {
+        if (customFactoryResult != null) {
             return customFactoryResult
         }
 
@@ -40,7 +40,7 @@ object ObjectCreator {
 
         val jClass = kClass.java
 
-        if(jClass.isEnum) return getEnumValue(jClass)
+        if (jClass.isEnum) return getEnumValue(jClass)
 
         return when (kClass) {
             BigDecimal::class -> BigDecimal.ZERO
@@ -66,14 +66,25 @@ object ObjectCreator {
         return jClass.enumConstants.first()
     }
 
+    private fun createObject(kClass: KClass<*>, constructors: List<KFunction<Any>>): Any {
+        val constructor = constructors.firstOrNull()
+                ?: throw TestFactoryException("No suitable constructors: ${kClass.simpleName}")
+
+        return try {
+            createObject(constructor)
+        } catch(e: Exception) {
+            createObject(kClass, constructors.drop(1))
+        }
+    }
+
     private fun createObject(kClass: KClass<*>): Any {
-        if(kClass.isSealed) return createObject(kClass.sealedSubclasses.first())
+        if (kClass.isSealed) return createObject(kClass.sealedSubclasses.first())
 
-        val constructor = kClass.constructors
+        val constructors = kClass.constructors
+                .filter { it.visibility == KVisibility.PUBLIC }
                 .sortedByDescending { it.parameters.size }
-                .firstOrNull { it.visibility == KVisibility.PUBLIC } ?: throw TestFactoryException("No suitable constructors: ${kClass.simpleName}")
 
-        return createObject(constructor)
+        return createObject(kClass, constructors)
     }
 
     private fun createObject(constructor: KFunction<*>): Any {

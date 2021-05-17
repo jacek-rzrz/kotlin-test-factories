@@ -44,6 +44,18 @@ class ObjectCreatorTest {
     }
 
     @Test
+    fun `low cardinality constructors used as fallback`() {
+        fun error(): String {
+            throw Error("Boom")
+        }
+        class WithFailingConstructor(val param: String) {
+            constructor(param1: String, param2: String) : this(error())
+        }
+        val instance = ObjectCreator.create<WithFailingConstructor>()
+        assertThat(instance.param).isEqualTo("")
+    }
+
+    @Test
     fun `class with private constructors`() {
         class WithPrivateConstructor private constructor (val arg: Int) {
             constructor() : this(10)
