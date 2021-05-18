@@ -1,7 +1,10 @@
 package pl.rzrz.kotlin.test.factories.core
 
 import java.math.BigDecimal
+import java.net.URI
+import java.net.URL
 import java.time.*
+import java.util.*
 import kotlin.reflect.*
 
 object ObjectCreator {
@@ -58,6 +61,9 @@ object ObjectCreator {
             Map::class -> mapOf(create(kType.arguments[0].type!!) to create(kType.arguments[1].type!!))
             String::class -> ""
             ZonedDateTime::class -> ZonedDateTime.now()
+            UUID::class -> UUID.randomUUID()
+            URI::class -> URI.create("https://example.com")
+            URL::class -> URL("https://example.com")
             else -> createObject(kClass)
         }
     }

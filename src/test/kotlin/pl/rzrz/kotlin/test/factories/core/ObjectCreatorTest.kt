@@ -3,7 +3,10 @@ package pl.rzrz.kotlin.test.factories.core
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
+import java.net.URI
+import java.net.URL
 import java.time.*
+import java.util.*
 
 @Suppress("Unused")
 class ObjectCreatorTest {
@@ -93,6 +96,19 @@ class ObjectCreatorTest {
         assertThat(ObjectCreator.create<LocalDateTime>()).isNotNull
         assertThat(ObjectCreator.create<LocalDate>()).isNotNull
         assertThat(ObjectCreator.create<ZonedDateTime>()).isNotNull
+    }
+
+    @Test
+    fun `uuid are random`() {
+        val uuid1 = ObjectCreator.create<UUID>()
+        val uuid2 = ObjectCreator.create<UUID>()
+        assertThat(uuid1).isNotEqualTo(uuid2)
+    }
+
+    @Test
+    fun `uri and url`() {
+        assertThat(ObjectCreator.create<URI>().toASCIIString()).isEqualTo("https://example.com")
+        assertThat(ObjectCreator.create<URL>().toString()).isEqualTo("https://example.com")
     }
 
     @Test
