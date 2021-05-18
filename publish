@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-publicationName=$1
+set -e
 
-source ./secrets
+./setup-secrets
 
-./gradlew clean build
+ORG_GRADLE_PROJECT_publicationName=core ./gradlew clean build publish
+ORG_GRADLE_PROJECT_publicationName=generator ./gradlew publish
 
-ORG_GRADLE_PROJECT_publicationName=core ./gradlew bintrayUpload
-ORG_GRADLE_PROJECT_publicationName=generator ./gradlew bintrayUpload
+echo "Manually release from staging: https://oss.sonatype.org/#stagingRepositories"
